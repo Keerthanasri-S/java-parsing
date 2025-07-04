@@ -40,9 +40,9 @@ public interface Json<T> {
         } else if (Character.isDigit(firstChar) || firstChar == '-') {
             return new JsonNumber(firstChar, reader);
         }
-//        else if (firstChar == '[') {
-//            return new JsonArray(reader);
-//        }
+        else if (firstChar == '[') {
+            return new JsonArray(reader);
+        }
         return null;
     }
 

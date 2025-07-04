@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.util.List;
 
 import static com.example.json.Json.parse;
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,21 +75,21 @@ class JsonTest {
 
 
 
-//    @Test
-//    void testArrayUsingFile() throws IOException {
-//        Files.readAllLines(new File("src/test/resourses/json-array.txt").toPath().toAbsolutePath()).
-//                forEach(line->{
-//                    List parsedWithJsonArray = JsonParser.parseString(line).getAsJsonArray().asList();
-//
-//                    try {
-//                        Assertions.assertEquals(parsedWithJsonArray,parse(Reader.of(line)));
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
-//
-//
-//    }
+    @Test
+    void testArrayUsingFile() throws IOException {
+        Files.readAllLines(new File("src/test/resourses/json-array.txt").toPath().toAbsolutePath()).
+                forEach(line->{
+                    List parsedWithJsonArray = JsonParser.parseString(line).getAsJsonArray().asList();
+
+                    try {
+                        Assertions.assertEquals(parsedWithJsonArray,parse(Reader.of(line)));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+
+    }
 
 
 
