@@ -1,12 +1,15 @@
 package com.example.json;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import com.tngtech.archunit.thirdparty.com.google.common.reflect.TypeToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -77,12 +80,15 @@ class JsonTest {
 
     @Test
     void testArrayUsingFile() throws IOException {
-        Files.readAllLines(new File("src/test/resourses/json-array.txt").toPath().toAbsolutePath()).
+        Files.readAllLines(new File("src/test/resourses/json-array.txt").toPath()).
                 forEach(line->{
                     List parsedWithJsonArray = JsonParser.parseString(line).getAsJsonArray().asList();
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<List<Object>>(){}.getType();
+                    List<Object> items = gson.fromJson(line,type);
 
                     try {
-                        Assertions.assertEquals(parsedWithJsonArray,parse(Reader.of(line)));
+                        Assertions.assertEquals(items,parse(Reader.of(line)));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

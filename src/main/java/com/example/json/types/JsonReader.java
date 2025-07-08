@@ -37,9 +37,9 @@ public class JsonReader extends Reader {
         } else if (Character.isDigit(firstChar) || firstChar == '-') {
             return new JsonNumber(firstChar, this);
         }
-//        else if (firstChar == '[') {
-//            return new JsonArray(this);
-//        }
+        else if (firstChar == '[') {
+            return new JsonArray(this);
+        }
 
         throw new IOException("Unexpected character in JSON: " + firstChar);
     }
@@ -54,13 +54,13 @@ public class JsonReader extends Reader {
         }
     }
 
-//    public int peek() throws IOException {
-//        int ch = reader.read();
-//        if (ch != -1) {
-//            reader.unread(ch);
-//        }
-//        return ch;
-//    }
+    public int peek() throws IOException {
+        int ch = reader.read();
+        if (ch != -1) {
+            reader.unread(ch);
+        }
+        return ch;
+    }
 
     public void unread(int ch) throws IOException {
         reader.unread(ch);
@@ -120,5 +120,7 @@ public class JsonReader extends Reader {
     public long transferTo(Writer out) throws IOException {
         return reader.transferTo(out);
     }
+
+
 
 }

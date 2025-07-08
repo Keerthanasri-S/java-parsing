@@ -19,6 +19,7 @@ public class JsonNumber implements Json<Number> {
         final StringBuilder sb = new StringBuilder();
 
         int a;
+        char c = (char) reader.peek();
         while ((a = reader.read()) != -1) {
             sb.append((char) a);
 

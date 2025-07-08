@@ -1,12 +1,9 @@
 package com.example.json.types;
 
 import com.example.json.Json;
-import com.example.json.types.JsonReader;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 public class JsonArray implements Json<List<Object>> {
 
@@ -21,16 +18,14 @@ public class JsonArray implements Json<List<Object>> {
 
         reader.skipWhitespace();
         int ch = reader.read();
+
         if (ch == ']') {
-            return list; // empty array: []
+            return list; // empty array
         }
 
-        reader.unread(ch); // put back the first character for value parsing
+        reader.unread(ch); // push back for first element
+        list.add(Json.read(reader)); // read first element
 
-        // Read first element
-        list.add(Json.read(reader));
-
-        // Check for more elements
         while (true) {
             reader.skipWhitespace();
             ch = reader.read();
@@ -39,9 +34,9 @@ public class JsonArray implements Json<List<Object>> {
                 reader.skipWhitespace();
                 list.add(Json.read(reader));
             } else if (ch == ']') {
-                break; // End of array
+                break; // end of array
             } else {
-                throw new IOException("Expected ',' or ']' but found: " + (char) ch);
+                throw new IOException("Expected ',' or ']', but found: '" + (char) ch + "'");
             }
         }
 
@@ -56,6 +51,4 @@ public class JsonArray implements Json<List<Object>> {
         }
         return values;
     }
-
-
 }

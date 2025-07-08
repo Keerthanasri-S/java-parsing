@@ -26,6 +26,7 @@ public interface Json<T> {
         char firstChar = (char) ch;
        // char firstChar = (char) reader.read();
         return getJson(new JsonReader(reader), firstChar);
+
     }
 
     static Json<?> getJson(JsonReader reader, char firstChar) throws IOException {
