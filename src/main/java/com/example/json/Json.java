@@ -28,7 +28,7 @@ public interface Json<T> {
     static Json<?> read(JsonReader reader, ParseMode mode) throws IOException {
         reader.skipWhitespace();
         int ch = reader.read();
-        if (ch == -1) return null;
+       // if (ch == -1) return null;
 
         char firstChar = (char) ch;
         return getJson(reader, firstChar, mode);

@@ -100,10 +100,7 @@ public class JsonNumber implements Json<Number> {
     public Number getValue() {
         return buildNumber(builder);
     }
-    @Override
-    public String toString() {
-        return builder.toString(); // return the raw number as string — no quotes
-    }
+
 
 
 }

@@ -76,86 +76,6 @@ class JsonTest {
                     }
                 });
     }
-
-//    private List<Object> normalize(List<Object> list) {
-//        List<Object> normalized = new ArrayList<>();
-//        for (Object obj : list) {
-//            if (obj instanceof BigInteger) {
-//                normalized.add(new BigDecimal((BigInteger) obj));
-//            } else if (obj instanceof Number) {
-//                normalized.add(new BigDecimal(obj.toString())); // convert all Number types to BigDecimal
-//            } else {
-//                normalized.add(obj);
-//            }
-//        }
-//        return normalized;
-//    }
-
-
-//    @Test
-//    void testArrayUsingFile() throws IOException {
-//        Files.readAllLines(new File("src/test/resources/json-array.txt").toPath().toAbsolutePath())
-//                .forEach(line -> {
-//                    Gson gson = new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LAZILY_PARSED_NUMBER)
-//                            .create();
-//
-//                    Type type = new TypeToken<List<Object>>() {}.getType();
-//                    List<Object> expected = gson.fromJson(line, type);
-//
-//                    try {
-//                        List<Object> actual = (List<Object>) Json.parse(new StringReader(line));
-//                        Assertions.assertEquals((expected),(actual));
-//                    } catch (Exception e) {
-//                        System.out.println("Invalid JSON format: " + line);
-//                       // e.printStackTrace();
-//                    }
-//                });
-//    }
-
-
-//    @Test
-//    void testArrayUsingFile() throws IOException {
-//        Files.readAllLines(new File("src/test/resources/json-array.txt").toPath())
-//                .forEach(line -> {
-//                    Gson gson = new GsonBuilder()
-//                            .setObjectToNumberStrategy(ToNumberPolicy.LAZILY_PARSED_NUMBER)
-//                            .create();
-//
-//                    Type type = new TypeToken<List<Object>>() {}.getType();
-//                    List<Object> expected = gson.fromJson(line, type);
-//
-//                    try {
-//                        List<Object> actual = (List<Object>) Json.parse(new StringReader(line));
-//
-//                        // Compare element by element without normalize
-//                        Assertions.assertEquals(expected.size(), actual.size(), "Array size mismatch");
-//                        for (int i = 0; i < expected.size(); i++) {
-//                            Object exp = expected.get(i);
-//                            Object act = actual.get(i);
-//
-//                            if (exp instanceof Number && act instanceof Number) {
-//                                // Compare numerically
-//                              Assertions.assertEquals(
-//                                        ((Number) exp).doubleValue(),
-//                                        ((Number) act).doubleValue(),
-//                                        "Mismatch at index " + i
-//                                );
-//                                System.out.println(((Number) exp).doubleValue());
-//                                System.out.println(((Number) act).doubleValue());
-//                            } else {
-//                                Assertions.assertEquals(exp, act, "Mismatch at index " + i);
-//                            }
-//                        }
-//
-//                    } catch (Exception e) {
-//                        System.out.println("Invalid JSON format: " + line);
-//                    }
-//                });
-//    }
-
-
-
-
     @Test
     void testArrayUsingFile() throws IOException {
         Files.readAllLines(new File("src/test/resources/json-array.txt").toPath())
@@ -171,77 +91,53 @@ class JsonTest {
                         List<Object> actual = (List<Object>) Json.parse(new StringReader(line));
 
                         Assertions.assertEquals(expected.size(), actual.size(), "Array size mismatch");
+//
+//                        for (int i = 0; i < expected.size(); i++) {
+//                            Object exp = expected.get(i);
+//                            Object act = actual.get(i);
+//
+//                            System.out.println("Index: " + i);
+//                            System.out.println("Expected: " + exp + " (" + exp.getClass().getSimpleName() + ")");
+//                            System.out.println("Actual  : " + act + " (" + act.getClass().getSimpleName() + ")");
 
-                        for (int i = 0; i < expected.size(); i++) {
-                            Object exp = expected.get(i);
-                            Object act = actual.get(i);
-
-                            System.out.println("Index: " + i);
-                            System.out.println("Expected: " + exp + " (" + exp.getClass().getSimpleName() + ")");
-                            System.out.println("Actual  : " + act + " (" + act.getClass().getSimpleName() + ")");
-
-                            if (exp instanceof Number && act instanceof Number) {
+                            if (expected instanceof Number && actual instanceof Number) {
                                 try {
-                                    BigInteger expInt = new BigDecimal(exp.toString()).toBigIntegerExact();
-                                    BigInteger actInt = new BigDecimal(act.toString()).toBigIntegerExact();
+                                    BigInteger expInt = new BigDecimal(expected.toString()).toBigIntegerExact();
+                                    BigInteger actInt = new BigDecimal(actual.toString()).toBigIntegerExact();
 
                                     Assertions.assertEquals(
                                             expInt,
                                             actInt,
-                                            "Mismatch at index " + i
+                                            "Mismatch at index "
                                     );
                                 } catch (ArithmeticException e) {
                                     // fallback to BigDecimal comparison for decimal numbers
-                                    BigDecimal expDec = new BigDecimal(exp.toString());
-                                    BigDecimal actDec = new BigDecimal(act.toString());
+                                    BigDecimal expDec = new BigDecimal(expected.toString());
+                                    BigDecimal actDec = new BigDecimal(actual.toString());
 
                                     Assertions.assertEquals(
                                             0,
                                             expDec.compareTo(actDec),
-                                            "Mismatch at index " + i
+                                            "Mismatch at index "
                                     );
                                 }
                             } else {
                                 Assertions.assertEquals(
-                                        exp.toString(),
-                                        act.toString(),
-                                        "Mismatch at index " + i
+                                        expected.toString(),
+                                        actual.toString(),
+                                        "Mismatch at index "
                                 );
                             }
 
                             System.out.println(); // just a blank line for spacing
-                        }
+
 
                     } catch (Exception e) {
-                        System.out.println("Invalid JSON format: " + line);
+                        e.printStackTrace();
+//                        System.out.println("Invalid JSON format: " + line);
                     }
                 });
     }
-
-
-
-
-
-
-//    @Test
-//    void testObject() throws IOException {
-//        Files.readAllLines(new File("src/test/resourses/json-objects.txt").toPath())
-//                .forEach(line -> {
-//                    try {
-//                        Object parsedFromGson = JsonParser.parseString(line).getAsJsonObject();
-//                        Object parsedFromCustom = (Object) parse(Reader.of(line)); // Now this is safe
-//
-//
-//                        assertEquals(
-//                                parsedFromGson,
-//                                ((Object) parsedFromCustom),
-//                                "object fetch failed"
-//                        );
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
-//    }
 
     @Test
     void testObject() throws IOException {
