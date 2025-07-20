@@ -1,6 +1,7 @@
 package com.example.json.types;
 
 import com.example.json.Json;
+import com.example.json.JsonReader;
 
 import java.io.IOException;
 
@@ -14,7 +15,13 @@ public class JsonNull implements Json<Object> {
     }
 
     @Override
-    public Number getValue() {
+    public Object getValue() {
         return null;
     }
+    @Override
+    public String toString() {
+        return "null";
+    }
 }
+
+

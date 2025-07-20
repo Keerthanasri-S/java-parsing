@@ -1,6 +1,7 @@
 package com.example.json.types;
 
 import com.example.json.Json;
+import com.example.json.JsonReader;
 
 import java.io.IOException;
 
@@ -51,6 +52,10 @@ public  class JsonString implements Json<String> {
         return builder.toString();
     }
 
+    @Override
+    public String toString() {
+        return "\"" + builder.toString().replace("\"", "\\\"") + "\"";
+    }
 
 }
 

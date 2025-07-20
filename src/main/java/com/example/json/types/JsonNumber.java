@@ -1,6 +1,7 @@
 package com.example.json.types;
 
 import com.example.json.Json;
+import com.example.json.JsonReader;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,12 +19,20 @@ public class JsonNumber implements Json<Number> {
     private StringBuilder buildString(JsonReader reader) throws IOException {
         final StringBuilder sb = new StringBuilder();
 
-        int a;
-        char c = (char) reader.peek();
-        while ((a = reader.read()) != -1) {
-            sb.append((char) a);
 
+        while (true) {
+            int peek = reader.peek(); //  check next char without consuming
+            if (peek == -1) break; // end of input
+
+            char c = (char) peek;
+
+            if (Character.isDigit(c) || c == '.' || c == 'e' || c == 'E' || c == '+' || c == '-') {
+                sb.append((char) reader.read()); //  now consume
+            } else {
+                break;
+            }
         }
+
         return sb;
     }
 
@@ -43,7 +52,7 @@ public class JsonNumber implements Json<Number> {
 //                } else {
 //                    return doubleValue;
 //             //   }
-                return new BigDecimal(numberStr).stripTrailingZeros();
+                return new BigDecimal(numberStr);
 
             } else {
                 // Check if the number is an integer
@@ -89,8 +98,11 @@ public class JsonNumber implements Json<Number> {
 
     @Override
     public Number getValue() {
-
         return buildNumber(builder);
+    }
+    @Override
+    public String toString() {
+        return builder.toString(); // return the raw number as string — no quotes
     }
 
 

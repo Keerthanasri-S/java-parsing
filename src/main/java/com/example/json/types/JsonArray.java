@@ -1,6 +1,9 @@
 package com.example.json.types;
 
 import com.example.json.Json;
+import com.example.json.JsonReader;
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,22 +12,22 @@ public class JsonArray implements Json<List<Object>> {
 
     private final List<Json<?>> elements;
 
-    public JsonArray(JsonReader reader) throws IOException {
-        this.elements = parseArray(reader);
+
+    public JsonArray(JsonReader reader, Json.ParseMode mode) throws IOException {
+        this.elements = parseArray(reader, mode);
     }
 
-    private List<Json<?>> parseArray(JsonReader reader) throws IOException {
+    private List<Json<?>> parseArray(JsonReader reader, Json.ParseMode mode) throws IOException {
         List<Json<?>> list = new ArrayList<>();
 
         reader.skipWhitespace();
         int ch = reader.read();
-
         if (ch == ']') {
-            return list; // empty array
+            return list;
         }
 
-        reader.unread(ch); // push back for first element
-        list.add(Json.read(reader)); // read first element
+        reader.unread(ch); // put back for parsing
+        list.add(Json.read(reader, mode));
 
         while (true) {
             reader.skipWhitespace();
@@ -32,11 +35,11 @@ public class JsonArray implements Json<List<Object>> {
 
             if (ch == ',') {
                 reader.skipWhitespace();
-                list.add(Json.read(reader));
+                list.add(Json.read(reader, mode));
             } else if (ch == ']') {
-                break; // end of array
+                break;
             } else {
-                throw new IOException("Expected ',' or ']', but found: '" + (char) ch + "'");
+                throw new IOException("Expected ',' or ']' but found: " + (char) ch);
             }
         }
 

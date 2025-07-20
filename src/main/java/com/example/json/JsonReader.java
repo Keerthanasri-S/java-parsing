@@ -1,6 +1,6 @@
-package com.example.json.types;
+package com.example.json;
 
-import com.example.json.Json;
+import com.example.json.types.*;
 
 import java.io.IOException;
 import java.io.PushbackReader;
@@ -11,38 +11,54 @@ import java.nio.CharBuffer;
 public class JsonReader extends Reader {
 
     private final PushbackReader reader;
+    private final Json.ParseMode mode;
 
     public JsonReader(Reader reader) {
+        this(reader, Json.ParseMode.NORMAL);
+    }
+
+    public JsonReader(Reader reader, Json.ParseMode mode) {
         this.reader = new PushbackReader(reader);
+        this.mode = mode;
     }
 
-    public Json<?> readElement() throws IOException {
-        int ch;
-        do {
-            ch = reader.read();
-        } while (Character.isWhitespace(ch));
+//    public Json.ParseMode getMode() {
+//        return mode;
+//    }
 
-        if (ch == -1) return null;
-
-        char firstChar = (char) ch;
-
-        if (firstChar == 'n') {
-            return new JsonNull(this); // use current JsonReader
-        } else if (firstChar == 't') {
-            return new JsonBoolean(this, true);
-        } else if (firstChar == 'f') {
-            return new JsonBoolean(this, false);
-        } else if (firstChar == '"') {
-            return new JsonString(this);
-        } else if (Character.isDigit(firstChar) || firstChar == '-') {
-            return new JsonNumber(firstChar, this);
-        }
-        else if (firstChar == '[') {
-            return new JsonArray(this);
-        }
-
-        throw new IOException("Unexpected character in JSON: " + firstChar);
-    }
+//    public Json<?> readElement() throws IOException {
+//        int ch;
+//        do {
+//            ch = reader.read();
+//        } while (Character.isWhitespace(ch));
+//
+//        if (ch == -1) return null;
+//
+//        char firstChar = (char) ch;
+//
+//        if (mode == Json.ParseMode.PRIORITIZE_NUMBERS && (Character.isDigit(firstChar) || firstChar == '-')) {
+//            return new JsonNumber(firstChar, this);
+//        }
+//
+//        if (firstChar == 'n') {
+//            return new JsonNull(this);
+//        } else if (firstChar == 't') {
+//            return new JsonBoolean(this, true);
+//        } else if (firstChar == 'f') {
+//            return new JsonBoolean(this, false);
+//        } else if (firstChar == '"') {
+//            return new JsonString(this);
+//        } else if (Character.isDigit(firstChar) || firstChar == '-') {
+//            return new JsonNumber(firstChar, this);
+//        } else if (firstChar == '[') {
+//            return new JsonArray(this, mode);
+//        }
+////        else if (firstChar == '{') {
+////            return new JsonObjects(this);
+////        }
+//
+//        throw new IOException("Unexpected character in JSON: " + firstChar);
+//    }
 
     public void skipWhitespace() throws IOException {
         int ch;
@@ -120,7 +136,4 @@ public class JsonReader extends Reader {
     public long transferTo(Writer out) throws IOException {
         return reader.transferTo(out);
     }
-
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.json.types;
 
 import com.example.json.Json;
+import com.example.json.JsonReader;
 
 import java.io.IOException;
 
@@ -29,6 +30,10 @@ public class JsonBoolean implements Json<Boolean> {
     @Override
     public Boolean getValue() {
         return this.value;
+    }
+    @Override
+    public String toString() {
+        return Boolean.toString(value);  // <- THIS is the fix
     }
 }
 
