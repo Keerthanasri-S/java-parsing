@@ -18,7 +18,7 @@ public class JsonReader extends Reader {
     }
 
     public JsonReader(Reader reader, Json.ParseMode mode) {
-        this.reader = new PushbackReader(reader);
+        this.reader = new PushbackReader(reader,5);
         this.mode = mode;
     }
 

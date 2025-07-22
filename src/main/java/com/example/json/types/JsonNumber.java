@@ -1,3 +1,4 @@
+
 package com.example.json.types;
 
 import com.example.json.Json;
@@ -80,7 +81,7 @@ public class JsonNumber implements Json<Number> {
         }
     }
 
-        private Number parseBigNumber(final String numberStr) {
+    private Number parseBigNumber(final String numberStr) {
 
         try {
             return new BigInteger(numberStr); // Try BigInteger first
@@ -104,4 +105,3 @@ public class JsonNumber implements Json<Number> {
 
 
 }
-

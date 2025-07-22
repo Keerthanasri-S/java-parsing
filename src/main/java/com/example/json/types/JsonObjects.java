@@ -14,7 +14,7 @@ public class JsonObjects implements Json<Map<String, Json<?>>> {
 
     public JsonObjects(JsonReader reader) throws IOException {
         reader.skipWhitespace();
-         reader.read();
+        reader.read();
 //        if (firstChar != '{') {
 //            throw new IllegalArgumentException("Expected '{' to start JSON object");
 //        }
@@ -33,7 +33,7 @@ public class JsonObjects implements Json<Map<String, Json<?>>> {
             return map; // empty object
         }
         //reader.unread(ch1); // push back for first element
-       // map.put(Json.read(reader));
+        // map.put(Json.read(reader));
         while(true){
             reader.skipWhitespace();
             JsonString jsonString = new JsonString(reader);
@@ -49,10 +49,10 @@ public class JsonObjects implements Json<Map<String, Json<?>>> {
 
 
 //
-        reader.skipWhitespace();
-        int next = reader.read();
+            reader.skipWhitespace();
+            int next = reader.read();
             if (next == ',') {
-               continue;
+                continue;
             } else if (next == '}') {
                 break;
             }

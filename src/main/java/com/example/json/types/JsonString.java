@@ -1,3 +1,4 @@
+
 package com.example.json.types;
 
 import com.example.json.Json;
@@ -58,6 +59,3 @@ public  class JsonString implements Json<String> {
     }
 
 }
-
-
-
