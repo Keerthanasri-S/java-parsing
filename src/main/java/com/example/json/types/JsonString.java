@@ -55,7 +55,7 @@ public  class JsonString implements Json<String> {
 
     @Override
     public String toString() {
-        return "\"" + builder.toString().replace("\"", "\\\"") + "\"";
+        return  builder.toString().replace("\"", "\\\"") ;
     }
 
 }

@@ -11,9 +11,11 @@ import java.math.BigInteger;
 public class JsonNumber implements Json<Number> {
 
     private final StringBuilder builder;
+    private final Number value;
 
     public JsonNumber(char firstChar, JsonReader reader) throws IOException {
         builder = new StringBuilder().append(firstChar).append(buildString(reader));
+        this.value = buildNumber(builder);
 
     }
 
@@ -99,8 +101,14 @@ public class JsonNumber implements Json<Number> {
 
     @Override
     public Number getValue() {
-        return buildNumber(builder);
+        return value;
     }
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
+
 
 
 
