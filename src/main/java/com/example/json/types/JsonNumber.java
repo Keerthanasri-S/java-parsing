@@ -103,10 +103,7 @@ public class JsonNumber implements Json<Number> {
     public Number getValue() {
         return value;
     }
-    @Override
-    public String toString() {
-        return value.toString();
-    }
+
 
 
 
